@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 import os
 import environ
+
+
 env = environ.Env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -45,12 +47,14 @@ INSTALLED_APPS = [
     # my app
     'account.apps.AccountConfig',
     'product.apps.ProductConfig',
+    'product_api.apps.ProductApiConfig',
 
     'rest_framework',
     'rest_framework_simplejwt',
     'drf_spectacular',
     'tinymce',
     'widget_tweaks',
+    'phonenumber_field',
 
 
 ]
@@ -132,6 +136,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+MEDIA_URL = 'media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
@@ -204,3 +212,9 @@ TINYMCE_DEFAULT_CONFIG = {
     'valid_elements': '*[*]',
     'extended_valid_elements': 'img[class|src|border|alt|title|width|height|style]',
 }
+
+AUTH_USER_MODEL = 'account.User'
+
+
+
+
