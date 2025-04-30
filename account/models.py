@@ -10,7 +10,7 @@ class User(AbstractUser):
     first_name = models.CharField(max_length=50, blank=True, null=True)
     last_name = models.CharField(max_length=50, blank=True, null=True)
     melicode = models.CharField(max_length=10, null=True, blank=True)
-    phone_number = PhoneNumberField(max_length=13, blank=True, null=True, unique=True)
+    phone_number = models.CharField(max_length=13, blank=True, null=True, unique=True)
     email = models.EmailField(unique=True)
     profile_photo = models.ImageField(upload_to="profile_photos/", null=True, blank=True)
     active = models.BooleanField(default=True)
