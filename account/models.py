@@ -1,8 +1,20 @@
 from django.db import models
 from django.utils import timezone
-from phonenumber_field.modelfields import PhoneNumberField
 from django.contrib.auth.models import AbstractUser
 from django.db.models import Q
+
+class Department(models.Model):
+    name = models.CharField(max_length=100)
+    def __str__(self):
+        return self.name
+
+class Role(models.Model):
+    department = models.ForeignKey(Department, on_delete=models.CASCADE, related_name='roles')
+    name = models.CharField(max_length=100)
+    responsibility = models.CharField(max_length=255)
+    def __str__(self):
+        return self.name
+
 
 class User(AbstractUser):
     username = models.CharField(max_length=50, unique=True)
