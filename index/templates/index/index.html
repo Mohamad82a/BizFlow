@@ -1,0 +1,23 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/override.css' %}">
+    <title>CSV File Input</title>
+
+</head>
+
+<body>
+    <div class="file-input-container">
+        <input type="file" name="csvFile" id="csvFile" accept=".csv">
+        <label for="csvFile">Choose CSV File</label>
+    </div>
+
+    <script src="{% static 'js/override.js' %}"></script>
+</body>
+
+</html>
+

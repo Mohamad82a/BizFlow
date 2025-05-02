@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'account.apps.AccountConfig',
     'product.apps.ProductConfig',
     'product_api.apps.ProductApiConfig',
+    'index.apps.IndexConfig',
 
     'rest_framework',
     'rest_framework_simplejwt',
