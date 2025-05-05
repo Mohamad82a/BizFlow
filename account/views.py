@@ -59,6 +59,10 @@ class UserProfileView(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class UserEditProfileView(APIView):
+    serializer_class = UserEditSerializer
+    permission_classes = [IsAuthenticated,]
+    parser_classes = [JSONParser,FormParser,MultiPartParser]
     def put(self, request):
         user = request.user
         serializer = UserSerializer(instance=user, data=request.data)
@@ -68,4 +72,19 @@ class UserProfileView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class ChangePasswordView(APIView):
+    serializer_class = ChangePasswordSerializer
+    permissions_classes = [IsAuthenticated,]
+
+    def put(self, request ,pk):
+        password = request.data['old_password']
+        new_password = request.data['new_password']
+
+        obj = User.objects.get(id=pk)
+        if not obj.check_password(raw_password=password):
+            return Response({'response' : 'Password not match'}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            obj.set_password(new_password)
+            obj.save()
+            return Response({'response' : 'Password changed successfully'}, status=status.HTTP_200_OK)
 

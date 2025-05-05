@@ -1,6 +1,6 @@
 from celery.worker.control import active
 from rest_framework import serializers
-from .models import User
+from .models import User, Department, Role
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, TokenRefreshSerializer
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -15,12 +15,44 @@ class CustomTokenRefreshSerializer(TokenRefreshSerializer):
         return super().validate(attrs)
 
 
+
+class DepartmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Department
+        fields = ['department']
+        extra_kwargs = {
+            'id': {'required': False},
+        }
+
+class RoleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Role
+        fields = ['role', 'responsibility']
+        extra_kwargs = {
+            'id' : {'required': False},
+        }
+
+
 class UserSerializer(serializers.ModelSerializer):
+    department = serializers.SerializerMethodField()
+    role = serializers.SerializerMethodField()
+
     class Meta:
         model = User
-        fields = ('id','username','first_name', 'last_name', 'melicode', 'phone_number','email', 'active',)
-        read_only_fields = ('id','active')
+        fields = ('id','username', 'department', 'role','first_name', 'last_name', 'melicode', 'phone_number','email', 'active',)
+        read_only_fields = ('id','active', 'department','role')
         extra_kwargs = {'password': {'write_only': True}}
+
+    def get_department(self, obj):
+        if obj.department:
+            return DepartmentSerializer(obj.department).data
+        return None
+
+    def get_role(self, obj):
+        if obj.role:
+            return RoleSerializer(obj.role).data
+        return None
+
 
     def create(self, validated_data):
         user = User.objects.create_user(
@@ -35,3 +67,28 @@ class UserSerializer(serializers.ModelSerializer):
         )
         return user
 
+class UserEditSerializer(serializers.ModelSerializer):
+    department = serializers.SerializerMethodField()
+    role = serializers.SerializerMethodField()
+
+    class Meta:
+        model = User
+        fields = (
+        'id', 'username', 'department', 'role','first_name', 'last_name', 'melicode', 'phone_number', 'email',
+        'active',)
+        read_only_fields = ('id','active',)
+
+    def get_department(self, obj):
+        if obj.department:
+            return DepartmentSerializer(obj.department).data
+        return None
+
+    def get_role(self, obj):
+        if obj.role:
+            return RoleSerializer(obj.role).data
+        return None
+
+
+class ChangePasswordSerializer(serializers.Serializer):
+    old_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)

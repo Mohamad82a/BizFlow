@@ -4,16 +4,16 @@ from django.contrib.auth.models import AbstractUser
 from django.db.models import Q
 
 class Department(models.Model):
-    name = models.CharField(max_length=100)
+    department = models.CharField(max_length=100)
     def __str__(self):
-        return self.name
+        return self.department
 
 class Role(models.Model):
     department = models.ForeignKey(Department, on_delete=models.CASCADE, related_name='roles')
-    name = models.CharField(max_length=100)
+    role = models.CharField(max_length=100)
     responsibility = models.CharField(max_length=255)
     def __str__(self):
-        return self.name
+        return self.role
 
 
 class User(AbstractUser):
