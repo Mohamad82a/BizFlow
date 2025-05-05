@@ -47,9 +47,8 @@ INSTALLED_APPS = [
 
     # my app
     'account.apps.AccountConfig',
-    'product.apps.ProductConfig',
-    'product_api.apps.ProductApiConfig',
     'index.apps.IndexConfig',
+    'order.apps.OrderConfig',
 
     'rest_framework',
     'rest_framework_simplejwt',
