@@ -15,26 +15,26 @@ from rest_framework_simplejwt.serializers import TokenRefreshSerializer
 from drf_spectacular.utils import extend_schema
 
 
-# class UserCreateAPIView(APIView):
-#     serializer_class = UserSerializer
-#     permission_classes = [permissions.AllowAny]
-#
-#     def post(self, request):
-#         serializer = UserSerializer(data=request.data, context={'request': request})
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class UserCreateAPIView(APIView):
+    serializer_class = UserSerializer
+    permission_classes = [AllowAny]
 
-# class CustomTokenObtainPairView(TokenObtainPairView):
-#     parser_classes = [JSONParser ,MultiPartParser]
-#     serializer_class = CustomTokenObtainPairSerializer
-#
-#
-# class CustomTokenRefreshView(TokenRefreshView):
-#     # parser_classes = [JSONParser]
-#     serializer_class = CustomTokenRefreshSerializer
-#
+    def post(self, request):
+        serializer = UserSerializer(data=request.data, context={'request': request})
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class CustomTokenObtainPairView(TokenObtainPairView):
+    parser_classes = [JSONParser ,MultiPartParser]
+    serializer_class = CustomTokenObtainPairSerializer
+
+
+class CustomTokenRefreshView(TokenRefreshView):
+    # parser_classes = [JSONParser]
+    serializer_class = CustomTokenRefreshSerializer
+
 # class UserCreateAPIView(CreateAPIView):
 #     serializer_class = UserSerializer
 #     permissions_classes = [AllowAny]
