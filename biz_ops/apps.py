@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class OrderConfig(AppConfig):
+class BizOpsConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'order'
+    name = 'biz_ops'

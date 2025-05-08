@@ -46,16 +46,17 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # my app
-    'account.apps.AccountConfig',
+    'biz_auth.apps.BizAuthConfig',
+    'biz_ops.apps.BizOpsConfig',
+    'biz_analytics.apps.BizAnalyticsConfig',
+    'biz_crm.apps.BizCrmConfig',
     'index.apps.IndexConfig',
-    'order.apps.OrderConfig',
 
     'rest_framework',
     'rest_framework_simplejwt',
     'drf_spectacular',
     'tinymce',
     'widget_tweaks',
-    'phonenumber_field',
 
 
 ]
@@ -267,7 +268,7 @@ TINYMCE_DEFAULT_CONFIG = {
     'extended_valid_elements': 'img[class|src|border|alt|title|width|height|style]',
 }
 
-AUTH_USER_MODEL = 'account.User'
+AUTH_USER_MODEL = 'biz_auth.User'
 
 
 

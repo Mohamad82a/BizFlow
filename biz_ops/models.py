@@ -1,5 +1,5 @@
 from django.db import models
-from account.models import Department
+from biz_auth.models import Department
 
 class Order(models.Model):
     title = models.CharField(max_length=255)
