@@ -1,6 +1,5 @@
 from http.client import responses
 from django.shortcuts import render
-from elasticsearch.dsl.serializer import serializer
 from rest_framework.parsers import JSONParser, FormParser, MultiPartParser
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.response import Response

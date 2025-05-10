@@ -1,4 +1,4 @@
-from celery.worker.control import active
+# from celery.worker.control import active
 from rest_framework import serializers
 from .models import User, Department, Role
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, TokenRefreshSerializer
