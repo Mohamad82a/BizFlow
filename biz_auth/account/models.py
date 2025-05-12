@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db.models import Q
 
 class Department(models.Model):
@@ -14,6 +14,36 @@ class Role(models.Model):
     responsibility = models.CharField(max_length=255)
     def __str__(self):
         return self.role
+
+
+# class UserManager(BaseUserManager):
+#     def create_user(self, phone, password=None):
+#         """
+#         Creates and saves a User with the given email, date of
+#         birth and password.
+#         """
+#         if not phone:
+#             raise ValueError("Users must have an email address")
+#
+#         user = self.model(
+#             phone=self.normalize_email(phone),
+#         )
+#
+#         user.set_password(password)
+#         user.save(using=self._db)
+#         return user
+#
+#     def create_superuser(self, phone, password=None):
+#         """
+#         Creates and saves a superuser with the given email and password.
+#         """
+#         user = self.create_user(
+#             phone,
+#             password=password,
+#         )
+#         user.is_admin = True
+#         user.save(using=self._db)
+#         return user
 
 
 class User(AbstractUser):
@@ -41,7 +71,8 @@ class User(AbstractUser):
         self.save(update_fields=['last_logout'])
 
     def save(self, *args, **kwargs):
-        self.department = self.role.department
+        if self.role:
+            self.department = self.role.department
         super().save(*args, **kwargs)
 
     def __str__(self):

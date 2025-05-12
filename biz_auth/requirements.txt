@@ -5,8 +5,10 @@ djangorestframework-simplejwt
 mysqlclient
 python-decouple
 gunicorn
+pillow
 django-widget-tweaks
 drf-yasg
 elasticsearch
 celery
 drf-spectacular
+django-jazzmin

@@ -13,6 +13,7 @@ ALLOWED_HOSTS = ['*']
 
 # Application definition
 INSTALLED_APPS = [
+    'jazzmine',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -71,8 +72,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'biz_auth_db',
-        'USER': 'user',
-        'PASSWORD': 'password',
+        'USER': 'biz_auth_user',
+        'PASSWORD': 'biz_auth_pass',
         'HOST': 'mysql',
         'PORT': '3306',
     }
@@ -87,7 +88,11 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-STATIC_URL = '/static/'
+STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+MEDIA_URL = 'media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

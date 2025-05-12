@@ -10,8 +10,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: rootpass
       MYSQL_DATABASE: biz_auth_db
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
+      MYSQL_USER: biz_auth_user
+      MYSQL_PASSWORD: biz_auth_pass
     ports:
       - "4307:3306"
     volumes:
@@ -21,8 +21,8 @@ services:
     image: postgres:15
     environment:
       POSTGRES_DB: biz_ops_db
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
+      POSTGRES_USER: biz_ops_user
+      POSTGRES_PASSWORD: biz_ops_pass
     ports:
       - "5432:5432"
     volumes:
@@ -78,8 +78,8 @@ services:
     environment:
       - DB_HOST=mysql
       - DB_NAME=biz_auth_db
-      - DB_USER=user
-      - DB_PASSWORD=password
+      - DB_USER=biz_auth_user
+      - DB_PASSWORD=biz_auth_pass
     ports:
       - "8001:8000"
 
@@ -90,8 +90,8 @@ services:
     environment:
       - DB_HOST=postgres
       - DB_NAME=biz_ops_db
-      - DB_USER=user
-      - DB_PASSWORD=password
+      - DB_USER=biz_ops_user
+      - DB_PASSWORD=biz_ops_pass
     ports:
       - "8002:8000"
 
