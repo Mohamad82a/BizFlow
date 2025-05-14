@@ -11,7 +11,8 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
-CMD ["gunicorn", "biz_auth.wsgi:application", "--bind", "0.0.0.0:8000"]
+RUN chmod +x entrypoint.sh
+#CMD ["gunicorn", "biz_auth.wsgi:application", "--bind", "0.0.0.0:8000"]
 #CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
 
 

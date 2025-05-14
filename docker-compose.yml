@@ -82,6 +82,9 @@ services:
       - DB_PASSWORD=biz_auth_pass
     ports:
       - "8001:8000"
+    volumes:
+      - ./biz_auth:/code
+    command: ["sh", "/code/entrypoint.sh"]
 
   biz_ops:
     build: ./biz_ops
@@ -94,6 +97,8 @@ services:
       - DB_PASSWORD=biz_ops_pass
     ports:
       - "8002:8000"
+    volumes:
+      - ./biz_ops:/app
 
   biz_analytics:
     build: ./biz_analytics
@@ -105,6 +110,8 @@ services:
       - REDIS_HOST=redis
     ports:
       - "8003:8000"
+    volumes:
+      - ./biz_analytics:/app
 
   biz_crm:
     build: ./biz_crm
@@ -118,6 +125,8 @@ services:
       - REDIS_HOST=redis
     ports:
       - "8004:8000"
+    volumes:
+      - ./biz_crm:/app
 
 volumes:
   mysql_data:
