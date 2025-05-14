@@ -1,8 +1,16 @@
 from django.urls import path, include
 from rest_framework_simplejwt.views import TokenVerifyView, TokenRefreshView, TokenObtainPairView
 # from rest_framework.routers import DefaultRouter
-from .views import *
+from .views import (
+    CustomTokenObtainPairView,
+    UserProfileView,
+    CustomTokenRefreshView,
+    UserCreateAPIView,
+    UserEditProfileView,
+    ChangePasswordView,
+)
 from django.contrib import admin
+
 app_name = 'account'
 
 # router = DefaultRouter()
@@ -20,5 +28,5 @@ urlpatterns = [
     path('register', UserCreateAPIView.as_view(), name='register'),
     path('profile', UserProfileView.as_view(), name='profile'),
     path('profile/edit', UserEditProfileView.as_view(), name='profile-edit'),
-    path('profile/change_password/<int:pk>', ChangePasswordView.as_view(), name='change-password'),
+    path('profile/change_password/<str:username>', ChangePasswordView.as_view(), name='change-password'),
 ]

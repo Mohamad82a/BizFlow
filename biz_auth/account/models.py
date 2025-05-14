@@ -16,36 +16,6 @@ class Role(models.Model):
         return self.role
 
 
-# class UserManager(BaseUserManager):
-#     def create_user(self, phone, password=None):
-#         """
-#         Creates and saves a User with the given email, date of
-#         birth and password.
-#         """
-#         if not phone:
-#             raise ValueError("Users must have an email address")
-#
-#         user = self.model(
-#             phone=self.normalize_email(phone),
-#         )
-#
-#         user.set_password(password)
-#         user.save(using=self._db)
-#         return user
-#
-#     def create_superuser(self, phone, password=None):
-#         """
-#         Creates and saves a superuser with the given email and password.
-#         """
-#         user = self.create_user(
-#             phone,
-#             password=password,
-#         )
-#         user.is_admin = True
-#         user.save(using=self._db)
-#         return user
-
-
 class User(AbstractUser):
     department = models.ForeignKey(Department, on_delete=models.CASCADE, related_name='users', null=True, blank=True)
     role = models.ForeignKey(Role, on_delete=models.CASCADE, related_name='users', null=True, blank=True)

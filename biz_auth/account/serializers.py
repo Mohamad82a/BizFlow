@@ -1,7 +1,10 @@
 # from celery.worker.control import active
+from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 from .models import User, Department, Role
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, TokenRefreshSerializer
+
+
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
@@ -13,7 +16,6 @@ class CustomTokenRefreshSerializer(TokenRefreshSerializer):
     def validate(self, attrs):
         attrs['refresh'] = self.initial_data.get('refresh')
         return super().validate(attrs)
-
 
 
 class DepartmentSerializer(serializers.ModelSerializer):
@@ -43,11 +45,13 @@ class UserSerializer(serializers.ModelSerializer):
         read_only_fields = ('id','active', 'department','role')
         extra_kwargs = {'password': {'write_only': True}}
 
+    @extend_schema_field(DepartmentSerializer)
     def get_department(self, obj):
         if obj.department:
             return DepartmentSerializer(obj.department).data
         return None
 
+    @extend_schema_field(RoleSerializer)
     def get_role(self, obj):
         if obj.role:
             return RoleSerializer(obj.role).data
