@@ -1,8 +1,7 @@
 fastapi
 uvicorn[standard]
-sqlalchemy
+SQLAlchemy>=1.4
 asyncpg
 alembic
 pydantic
 python-dotenv
-gunicorn
