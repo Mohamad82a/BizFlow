@@ -1,5 +1,14 @@
 from http.client import responses
-from django.shortcuts import render
+from django.shortcuts import render, redirect, reverse
+from django.views import View
+from .forms import UserRegisterForm, SigninForm, SignupForm
+from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
+from .models import User, OTP
+from random import randint
+from django.core.mail import send_mail
+
+
 from rest_framework.parsers import JSONParser, FormParser, MultiPartParser
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.response import Response
@@ -12,6 +21,69 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework_simplejwt.serializers import TokenRefreshSerializer
 from drf_spectacular.utils import extend_schema
+
+
+
+class SigninView(View):
+    def get(self, request):
+        form = SigninForm()
+        return render(request, 'account/sign-in.html', {'form': form})
+
+    def post(self, request):
+        form = SigninForm(request.POST)
+        if form.is_valid():
+            cleaned_data = form.cleaned_data
+            user = authenticate(email=cleaned_data['email'], password=cleaned_data['password'])
+            if user is not None:
+                login(request, user)
+                return redirect('main:index')
+
+            else:
+                form.add_error('email', 'آدرس ایمیل اشتباه است')
+                form.add_error('password', 'رمزعبور اشتباه است')
+
+        return render(request, 'account/sign-in.html', {'form': form})
+
+class SignupView(View):
+    def get(self, request):
+        form = SigninForm()
+        return render(request, 'account/sign-up.html', {'form': form})
+
+    def post(self, request):
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            random_code = randint(10000, 99999)
+            OTP.objects.create(email=email, code=random_code)
+            # send_mail(
+            #     'Tykino',
+            #     'لطفا کد جهت ثبتنام در وبسایت تیکیتو'
+            #     'mohamad82abasi@gmail.com',
+            #     [email],
+            #     html_message=f"<h1>کد ورود شما : {random_code}</h1>",
+            #     fail_silently=False,
+            # )
+            print(random_code)
+        else:
+            form.add_error('email', 'آدرس ایمیل اشتباه است')
+
+        return render(request, 'account/sign-up.html', {'form': form})
+
+def user_register(request):
+    if request.method == 'POST':
+        form = UserRegisterForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            phone = form.cleaned_data.get('phone')
+
+            messages.success(request, 'حساب کاربری شما با موفقیت ایجاد شد. \n اکنون میتوانید وارد حساب کاربری خود شوید')
+            return redirect(reverse('home:main'))
+        else:
+            messages.error(request, 'ثبت ‌نام انجام نشد. لطفاً اطلاعات را بررسی کنید.')
+    else:
+        form = UserRegisterForm()
+    return render(request, 'account/registration.html', {'form': form})
+# API Views
 
 
 class UserCreateAPIView(APIView):

@@ -5,28 +5,39 @@ services:
   ##########################
   # Database Services
   ##########################
-  mysql:
-    image: mysql:8
-    environment:
-      MYSQL_ROOT_PASSWORD: rootpass
-      MYSQL_DATABASE: biz_auth_db
-      MYSQL_USER: biz_auth_user
-      MYSQL_PASSWORD: biz_auth_pass
-    ports:
-      - "4307:3306"
-    volumes:
-      - mysql_data:/var/lib/mysql
+#  mysql:
+#    image: mysql:8
+#    environment:
+#      MYSQL_ROOT_PASSWORD: rootpass
+#      MYSQL_DATABASE: biz_auth_db
+#      MYSQL_USER: biz_auth_user
+#      MYSQL_PASSWORD: biz_auth_pass
+#    ports:
+#      - "4307:3306"
+#    volumes:
+#      - mysql_data:/var/lib/mysql
 
-  postgres:
+  postgres_auth:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: biz_auth_db
+      POSTGRES_USER: biz_auth_user
+      POSTGRES_PASSWORD: biz_auth_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_auth_data:/var/lib/postgresql/data
+
+  postgres_ops:
     image: postgres:15
     environment:
       POSTGRES_DB: biz_ops_db
       POSTGRES_USER: biz_ops_user
       POSTGRES_PASSWORD: biz_ops_pass
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_ops_data:/var/lib/postgresql/data
 
   redis:
     image: redis:7
@@ -49,8 +60,14 @@ services:
       RABBITMQ_DEFAULT_USER: user
       RABBITMQ_DEFAULT_PASS: password
     ports:
-      - "5672:5672"
       - "15672:15672"
+
+  zookeeper:
+    image: bitnami/zookeeper:latest
+    ports:
+      - "22181:2181"
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
 
   kafka:
     image: bitnami/kafka:latest
@@ -60,13 +77,9 @@ services:
       - KAFKA_BROKER_ID=1
       - KAFKA_LISTENERS=PLAINTEXT://:9092
       - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
     depends_on:
       - zookeeper
-
-  zookeeper:
-    image: bitnami/zookeeper:latest
-    ports:
-      - "2181:2181"
 
   ##########################
   # Microservices
@@ -74,9 +87,9 @@ services:
   biz_auth:
     build: ./biz_auth
     depends_on:
-      - mysql
+      - postgres_auth
     environment:
-      - DB_HOST=mysql
+      - DB_HOST=postgres_auth
       - DB_NAME=biz_auth_db
       - DB_USER=biz_auth_user
       - DB_PASSWORD=biz_auth_pass
@@ -89,9 +102,9 @@ services:
   biz_ops:
     build: ./biz_ops
     depends_on:
-      - postgres
+      - postgres_ops
     environment:
-      - DB_HOST=postgres
+      - DB_HOST=postgres_ops
       - DB_NAME=biz_ops_db
       - DB_USER=biz_ops_user
       - DB_PASSWORD=biz_ops_pass
@@ -129,6 +142,7 @@ services:
       - ./biz_crm:/app
 
 volumes:
-  mysql_data:
-  postgres_data:
+#  mysql_data:
+  postgres_auth_data:
+  postgres_ops_data:
   elastic_data:

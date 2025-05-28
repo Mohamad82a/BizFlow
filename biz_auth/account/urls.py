@@ -2,12 +2,18 @@ from django.urls import path, include
 from rest_framework_simplejwt.views import TokenVerifyView, TokenRefreshView, TokenObtainPairView
 # from rest_framework.routers import DefaultRouter
 from .views import (
+
+    SigninView,
+    SignupView,
+
     CustomTokenObtainPairView,
     UserProfileView,
     CustomTokenRefreshView,
     UserCreateAPIView,
     UserEditProfileView,
     ChangePasswordView,
+
+
 )
 from django.contrib import admin
 
@@ -17,6 +23,14 @@ app_name = 'account'
 # router.register(r'users', UserProfileView)
 
 urlpatterns = [
+
+    path('signin', SigninView.as_view(), name='sign-in'),
+    path('signup', SignupView.as_view(), name='sign-up'),
+
+
+    # //////////
+    # API Urls
+    # //////////
 
     # # path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),

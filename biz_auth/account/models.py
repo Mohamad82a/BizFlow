@@ -21,10 +21,8 @@ class User(AbstractUser):
     role = models.ForeignKey(Role, on_delete=models.CASCADE, related_name='users', null=True, blank=True)
     username = models.CharField(max_length=50, unique=True)
     password = models.CharField(max_length=128)
-    first_name = models.CharField(max_length=50, blank=True, null=True)
-    last_name = models.CharField(max_length=50, blank=True, null=True)
-    melicode = models.CharField(max_length=10, null=True, blank=True)
-    phone_number = models.CharField(max_length=13, blank=True, null=True, unique=True)
+    full_name = models.CharField(max_length=50, blank=True, null=True, default='newuser')
+    phone = models.CharField(max_length=13, blank=True, null=True, unique=True)
     email = models.EmailField(unique=True)
     profile_photo = models.ImageField(upload_to="profile_photos/", null=True, blank=True)
     active = models.BooleanField(default=True)
@@ -48,5 +46,15 @@ class User(AbstractUser):
     def __str__(self):
         return f'{self.username}  -  {self.phone_number}'
 
+
+
+class OTP(models.Model):
+    id = models.AutoField(primary_key=True)
+    email = models.EmailField()
+    code = models.CharField(max_length=6)
+    updated_time = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f"OTPVerification(id={self.id}, otp_key={self.code}, updated_time={self.updated_time})"
 
 

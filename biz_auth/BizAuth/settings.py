@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'drf_spectacular',
     'drf_yasg',
+    'widget_tweaks',
 
 ]
 
@@ -68,7 +69,7 @@ AUTH_USER_MODEL = 'account.User'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -89,12 +90,12 @@ WSGI_APPLICATION = 'BizAuth.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'biz_auth_db',
         'USER': 'biz_auth_user',
         'PASSWORD': 'biz_auth_pass',
-        'HOST': 'mysql',
-        'PORT': '3306',
+        'HOST': 'postgres_auth',
+        'PORT': '5432',
     }
 }
 

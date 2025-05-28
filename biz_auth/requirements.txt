@@ -12,3 +12,6 @@ elasticsearch
 celery
 drf-spectacular
 django-jazzmin
+django-otp
+psycopg[binary]
+django-widget-tweaks
